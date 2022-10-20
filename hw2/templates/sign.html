@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Add service to page:</h2>
+    <form action="{{ url_for('sign') }}" method=post>
+	<p class="heading">Name: <input type=text name=name>
+	<p class="heading">Service: <input type=text>
+	<p class="heading">Location: <input type=text>
+	<p class="heading">Hours: <input type=text>
+	<p class="heading">Phone: <input type=text>
+        <p class="heading">Review: 
+	<textarea rows=5 cols=50 name=review></textarea></p>
+	<p><input type=submit value=Submit></p>
+    </form>
+{% endblock %}

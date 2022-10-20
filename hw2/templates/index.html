@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Guestbook</h2>
+
+    <h3>Sign <a href="{{ url_for('sign') }}">here</a></h3>
+    <h3>Entries</h3>
+    {% for entry in entries %}
+        <p class=entry>
+            {{ entry.name }} &comma;
+	    {{ entry.services }}&comma;
+	    {{ entry.location }}&comma;
+	    {{ entry.hours }}&comma;
+	    {{ entry.phone }}&comma;
+	    {{ entry.review }}&comma;
+        </p>
+    {% endfor %}
+
+{% endblock %}
