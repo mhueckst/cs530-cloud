@@ -1,5 +1,5 @@
 """
-A simple guestbook flask app.
+A simple services flask app.
 """
 import flask
 from flask.views import MethodView
