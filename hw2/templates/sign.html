@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h2>Add service to page:</h2>
+    <h2>Add a local service to the directory:</h2>
     <form action="{{ url_for('sign') }}" method=post>
-	<p class="heading">Name: <input type=text name=name>
-	<p class="heading">Service: <input type=text name="service">
-	<p class="heading">Location: <input type=text name="location">
-	<p class="heading">Hours: <input type=text name="hours">
-	<p class="heading">Phone: <input type=text name="phone">
+	<p class="heading">Name: <input type=text name=name placeholder="Name of service">
+	<p class="heading">Services: <input type=text name="services" placeholder="Services provided">
+	<p class="heading">Location: <input type=text name="location" placeholder="A physical address">
+	<p class="heading">Hours: <input type=text name="hours" placeholder="Hours of business">
+	<p class="heading">Phone: <input type=text name="phone" placeholder="Current phone number">
     <p class="heading">Review: 
-	<textarea rows=5 cols=50 name=review></textarea></p>
+	<textarea rows=5 cols=50 name=review placeholder="Enter a review of your experience with this service:"></textarea></p>
 	<p><input type=submit value=Submit></p>
     </form>
 {% endblock %}

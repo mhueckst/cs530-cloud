@@ -1,11 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h2 >Portland Area Services</h2>
+    <h2>Portland Area Services</h2>
 
-    <h3> <a href="{{ url_for('sign') }}">Add a service</a></h3>
-    <h3> <a href="{{ url_for('view_all') }}">View all services submitted</a></h3>
-
-    <h3>Recent Submissions</h3>
+    <h3>All services added:</h3>
     {% for entry in entries %}
         <p class=entry>
             {{ entry.name }}&comma;
@@ -16,5 +13,6 @@
 	    {{ entry.review }}
         </p>
     {% endfor %}
+    <h3> <a href="{{ url_for('index') }}">Go back to main page</a></h3>
 
 {% endblock %}
