@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Portland Area Services</h2>
+
+    <h3>All services added:</h3>
+    {% for entry in entries %}
+        <p class=entry>
+            {{ entry.name }}&comma;
+	    {{ entry.services }}&comma;
+	    {{ entry.location }}&comma;
+	    {{ entry.hours }}&comma;
+	    {{ entry.phone }}&comma;
+	    {{ entry.review }}
+        </p>
+    {% endfor %}
+    <h3> <a href="{{ url_for('index') }}">Go back to main page</a></h3>
+
+{% endblock %}
