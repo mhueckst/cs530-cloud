@@ -1,5 +1,10 @@
-# Some code used from Google's 'Python Google Cloud Vision sample 
-#       for Google App Engine Flexible Environment' tutorial 
+# Some code used from Google's 
+#   'Python Google Cloud Vision sample for Google App Engine Flexible Environment' tutorial 
+# 
+# This app uses cloud storage to hold an uploaded photo from the user. Then the Vision API 
+#   landmark recognition is run on the image, to determine any landmarks Google is aware of. 
+#   The image and resulting landmark description (if it exists) is stored in cloud datastore, 
+#   and is shown to the user with a google map of the landmark coordinates centered. 
 
 from datetime import datetime
 import logging
@@ -14,9 +19,7 @@ from google.cloud import vision
 
 CLOUD_STORAGE_BUCKET = os.environ.get("CLOUD_STORAGE_BUCKET")
 
-
 app = Flask(__name__)
-
 
 @app.route("/")
 def homepage():
@@ -57,12 +60,18 @@ def upload_photo():
     image = vision.Image(source=vision.ImageSource(gcs_image_uri=source_uri))
     landmarks = vision_client.landmark_detection(image=image).landmark_annotations
 
-    # If a landmark is detected, save to Datastore the description of the landmark
+    # If a landmark is detected, save the description, lat and long of the landmark to Datastore
     if len(landmarks) > 0:
         landmark = landmarks[0]
         landmark_desc = landmark.description
+
+        landmark_lat = landmark.locations[0].lat_lng.latitude        
+        landmark_long = landmark.locations[0].lat_lng.longitude
+
     else: 
         landmark_desc = "Unknown landmark"
+        landmark_lat = ""
+        landmark_long = ""
 
     # Create a Cloud Datastore client.
     datastore_client = datastore.Client()
@@ -86,6 +95,8 @@ def upload_photo():
     entity["image_public_url"] = blob.public_url
     entity["timestamp"] = current_datetime
     entity["landmark"] = landmark_desc
+    entity["lat"] = landmark_lat
+    entity["long"] = landmark_long
 
     # Save the new entity to Datastore.
     datastore_client.put(entity)
