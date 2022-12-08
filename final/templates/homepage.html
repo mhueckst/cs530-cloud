@@ -1,0 +1,37 @@
+<!--
+ Copyright 2021 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<h1>Google Landmark Detection and Mapping</h1>
+
+<p>This Python Flask application uses the Vision API landmark detection to determine
+    the landmark in the photo. Then it is mapped using the Google Maps JS API
+</p>
+
+<br>
+
+<html>
+  <body>
+    <form action="upload_photo" method="POST" enctype="multipart/form-data">
+      Upload File: <input type="file" name="file"><br>
+      <input type="submit" name="submit" value="Submit">
+    </form>
+    {% for image_entity in image_entities %}
+      <img src="{{image_entity['image_public_url']}}" width=auto height=300>
+      <p>{{image_entity['blob_name']}} was uploaded {{image_entity['timestamp']}}.</p>
+      <p>Landmark in photo: {{image_entity['landmark']}}</p>
+    {% endfor %}
+  </body>
+</html> 
