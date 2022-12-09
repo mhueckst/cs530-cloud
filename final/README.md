@@ -1,111 +1,52 @@
-# Python Google Cloud Vision sample for Google App Engine Flexible Environment
+This project allows the user to get a landmark description from a photo of a landmark. This is done by using the Google Vision API landmark detection feature, which returns a landmark, then by querying Wikipedia for that landmark with the Wiki API. 
 
-[![Open in Cloud Shell][shell_img]][shell_link]
+To use this project (deploy the container on Cloud Run), a few steps are necessary for setup: 
 
-[shell_img]: http://gstatic.com/cloudssh/images/open-btn.png
-[shell_link]: https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/python-docs-samples&page=editor&open_in_editor=codelabs/flex_and_vision/README.md
+-Create a new project within Google Cloud Platform. 
 
-This sample demonstrates how to use the [Google Cloud Vision API](https://cloud.google.com/vision/), [Google Cloud Storage](https://cloud.google.com/storage/), and [Google Cloud Datastore](https://cloud.google.com/datastore/) on [Google App Engine Flexible Environment](https://cloud.google.com/appengine).
+-Enable billing for the project
 
-## Setup
+-On Google Cloud Shell, run:
 
-Create a new project with the [Google Cloud Platform console](https://console.cloud.google.com/).
-Make a note of your project ID, which may be different than your project name.
+    export PROJECT_ID=<YOUR_PROJECT_ID>
 
-Make sure to [Enable Billing](https://pantheon.corp.google.com/billing?debugUI=DEVELOPERS)
-for your project.
+-Clone the repo from gitlab: 
+    https://gitlab.com/mhueck2/cloud-huecksteadt-mhueck2.git
 
-Download the [Google Cloud SDK](https://cloud.google.com/sdk/docs/) to your
-local machine. Alternatively, you could use the [Cloud Shell](https://cloud.google.com/shell/docs/quickstart), which comes with the Google Cloud SDK pre-installed.
+Change directory: 
+    cd cloud-huecksteadt-mhueck2/final
 
-Initialize the Google Cloud SDK (skip if using Cloud Shell):
-
-    gcloud init
-
-Create your App Engine application:
-
-    gcloud app create
-
-Set an environment variable for your project ID, replacing `[YOUR_PROJECT_ID]`
-with your project ID:
-
-    export PROJECT_ID=[YOUR_PROJECT_ID]
-
-## Getting the sample code
-
-Run the following command to clone the Github repository:
-
-    git clone https://github.com/GoogleCloudPlatform/python-docs-samples.git
-
-Change directory to the sample code location:
-
-    cd python-docs-samples/codelabs/flex_and_vision
-
-## Authentication
-
-Enable the APIs:
+Authentication- we must enable the Google APIs and bind to a service account. Run the following commands in the cloud shell:    
 
     gcloud services enable vision.googleapis.com
     gcloud services enable storage-component.googleapis.com
     gcloud services enable datastore.googleapis.com
 
-Create a Service Account to access the Google Cloud APIs when testing locally:
+Create a service account: 
 
-    gcloud iam service-accounts create hackathon \
-    --display-name "My Hackathon Service Account"
-
-Give your newly created Service Account appropriate permissions:
-
+    gcloud iam service-accounts create finalprojtest
     gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member serviceAccount:hackathon@${PROJECT_ID}.iam.gserviceaccount.com \
+    --member serviceAccount:finalprojtest@${PROJECT_ID}.iam.gserviceaccount.com \
     --role roles/owner
 
-After creating your Service Account, create a Service Account key:
+Create a service account key: 
 
     gcloud iam service-accounts keys create ~/key.json --iam-account \
-    hackathon@${PROJECT_ID}.iam.gserviceaccount.com
-
-Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to where
-you just put your Service Account key:
+    finalprojtest@${PROJECT_ID}.iam.gserviceaccount.com
 
     export GOOGLE_APPLICATION_CREDENTIALS="/home/${USER}/key.json"
 
-## Running locally
-
-Create a virtual environment and install dependencies:
-
-    virtualenv -p python3 env
-    source env/bin/activate
-    pip install -r requirements.txt
-
-Create a Cloud Storage bucket. It is recommended that you name it the same as
-your project ID:
+Create a bucket for the photo storage: 
 
     gsutil mb gs://${PROJECT_ID}
-
-Set the environment variable `CLOUD_STORAGE_BUCKET`:
-
     export CLOUD_STORAGE_BUCKET=${PROJECT_ID}
 
-Start your application locally:
+Then build the Docker image on Cloud build: 
 
-    python main.py
+    gcloud builds submit --timeout=900 --tag gcr.io/${PROJECT_ID}/finalproj
 
-Visit `localhost:8080` to view your application running locally. Press `Control-C`
-on your command line when you are finished.
+Finally, deploy the docker image: 
 
-When you are ready to leave your virtual environment:
-
-    deactivate
-
-## Deploying to App Engine
-
-Open `app.yaml` and replace <your-cloud-storage-bucket> with the name of your
-Cloud Storage bucket.
-
-Deploy your application to App Engine using `gcloud`. Please note that this may
-take several minutes.
-
-    gcloud app deploy
-
-Visit `https://[YOUR_PROJECT_ID].appspot.com` to view your deployed application.
+    gcloud run deploy finalproject \
+    --image gcr.io/${PROJECT_ID}/finalproj \
+    --service-account finalprojtest@${PROJECT_ID}.iam.gserviceaccount.com

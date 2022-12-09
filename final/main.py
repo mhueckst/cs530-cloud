@@ -74,7 +74,7 @@ def upload_photo():
         landmark_long = ""
 
     # Query Wikipedia API for summary of landmark. 
-    summary = wikipedia.summary(landmark_desc, sentences=2, auto_suggest=True, redirect=True)
+    summary = wikipedia.summary(landmark_desc, sentences=3, auto_suggest=True, redirect=True)
 
     # Create a Cloud Datastore client.
     datastore_client = datastore.Client()
@@ -124,4 +124,5 @@ def server_error(e):
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    # app.run(host="127.0.0.1", port=8080, debug=True)
+    app.run(host='0.0.0.0',port=int(os.environ.get('PORT, 8080')))
