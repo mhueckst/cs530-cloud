@@ -1,7 +1,7 @@
 <h1>Google Landmark Detection and Mapping</h1>
 
 <p>This Python Flask application uses the Vision API landmark detection to determine
-    the landmark in the photo. Then it is mapped using the Google Maps JS API
+    the landmark in the photo. Then it queried for a summary using the Wikipedia API
 </p>
 
 <br>
@@ -15,8 +15,10 @@
     {% for image_entity in image_entities %}
       <img src="{{image_entity['image_public_url']}}" width=auto height=300>
       <p>{{image_entity['blob_name']}} was uploaded {{image_entity['timestamp']}}.</p>
-      <p>Landmark in photo: {{image_entity['landmark']}}</p>
-      <p>Latitude: {{image_entity['lat']}}, Longitude: {{image_entity['long']}}</p> 
+      <p id="landmark">Landmark in photo: {{image_entity['landmark']}}</p>
+      <p>Latitude, Longitude: {{image_entity['lat']}}, {{image_entity['long']}}</p> 
+      <p>From Wikipedia: {{image_entity['summary']}}</p>
+      </br>
     {% endfor %}
   </body>
 </html> 

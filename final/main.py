@@ -4,18 +4,18 @@
 # This app uses cloud storage to hold an uploaded photo from the user. Then the Vision API 
 #   landmark recognition is run on the image, to determine any landmarks Google is aware of. 
 #   The image and resulting landmark description (if it exists) is stored in cloud datastore, 
-#   and is shown to the user with a google map of the landmark coordinates centered. 
+#   and is shown to the user with a wikipedia summary of the landmark. 
 
 from datetime import datetime
 import logging
 import os
+import wikipedia
 
 from flask import Flask, redirect, render_template, request
 
 from google.cloud import datastore
 from google.cloud import storage
 from google.cloud import vision
-
 
 CLOUD_STORAGE_BUCKET = os.environ.get("CLOUD_STORAGE_BUCKET")
 
@@ -73,6 +73,9 @@ def upload_photo():
         landmark_lat = ""
         landmark_long = ""
 
+    # Query Wikipedia API for summary of landmark. 
+    summary = wikipedia.summary(landmark_desc, sentences=2, auto_suggest=True, redirect=True)
+
     # Create a Cloud Datastore client.
     datastore_client = datastore.Client()
 
@@ -97,6 +100,7 @@ def upload_photo():
     entity["landmark"] = landmark_desc
     entity["lat"] = landmark_lat
     entity["long"] = landmark_long
+    entity["summary"] = summary
 
     # Save the new entity to Datastore.
     datastore_client.put(entity)
@@ -120,6 +124,4 @@ def server_error(e):
 
 
 if __name__ == "__main__":
-    # This is used when running locally. Gunicorn is used to run the
-    # application on Google App Engine. See entrypoint in app.yaml.
     app.run(host="127.0.0.1", port=8080, debug=True)
