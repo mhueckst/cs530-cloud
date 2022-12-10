@@ -92,7 +92,7 @@ def upload_photo():
     key = datastore_client.key(kind, name)
 
     # Construct the new entity using the key. Set dictionary values for entity
-    # keys blob_name, storage_public_url, timestamp, and joy.
+    # keys blob_name, storage_public_url, timestamp, and landmark recog./wiki info 
     entity = datastore.Entity(key)
     entity["blob_name"] = blob.name
     entity["image_public_url"] = blob.public_url
