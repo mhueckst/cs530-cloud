@@ -11,9 +11,11 @@ To use this project (deploy the container on Cloud Run), a few steps are necessa
     export PROJECT_ID=<YOUR_PROJECT_ID>
 
 -Clone the repo from gitlab: 
+
     https://gitlab.com/mhueck2/cloud-huecksteadt-mhueck2.git
 
 Change directory: 
+
     cd cloud-huecksteadt-mhueck2/final
 
 Authentication- we must enable the Google APIs and bind to a service account. Run the following commands in the cloud shell:    
