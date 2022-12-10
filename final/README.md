@@ -47,6 +47,4 @@ Then build the Docker image on Cloud build:
 
 Finally, deploy the docker image: 
 
-    gcloud run deploy finalproject \
-    --image gcr.io/${PROJECT_ID}/finalproj \
-    --service-account finalprojtest@${PROJECT_ID}.iam.gserviceaccount.com
+    gcloud run deploy finalproject --image gcr.io/${PROJECT_ID}/finalproj --service-account finalprojtest@${PROJECT_ID}.iam.gserviceaccount.com --set-env-vars CLOUD_STORAGE_BUCKET=${PROJECT_ID}

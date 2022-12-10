@@ -5,18 +5,14 @@ FROM google/cloud-sdk
 MAINTAINER Your Name "mhueck2@pdx.edu"
 
 # Copy the contents of the current directory into the container directory /final
-COPY . /final
+COPY . /app
 
 # Set the working directory of the container to /app
-WORKDIR /final
+WORKDIR /app
 
 # Install the Python packages specified by requirements.txt into the container
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python3"]
-
-#CMD ["main.py"]
-
 # Set the parameters to the program
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 app:app
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 main:app
 
