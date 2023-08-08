@@ -1,5 +1,9 @@
 This project allows the user to get a landmark description from a photo of a landmark. This is done by using the Google Vision API landmark detection feature, which returns a landmark, then by querying Wikipedia for that landmark with the Wiki API. 
 
+![demo pic](https://github.com/mhueckst/cs530-cloud/blob/main/final/cs530%20final%20pic.png)
+
+**Usage**
+
 To use this project (deploy the container on Cloud Run), a few steps are necessary for setup: 
 
 -Create a new project within Google Cloud Platform. 
